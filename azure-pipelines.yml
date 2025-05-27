@@ -1,31 +1,24 @@
-trigger:
-- main
-
-resources:
-- repo: self
-
-variables:
-  dockerRegistryServiceConnection: 'acrServiceConnection'
-  imageRepository: 'productcatalogue'
-  containerRegistry: 'javaprojectacr.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/java/kubernetes/productcatalogue/Dockerfile'
-  tag: '$(Build.BuildId)'
-
 stages:
 - stage: Build
-  displayName: Build and Push Stage
   jobs:
   - job: Build
-    displayName: Build Job
     pool:
-      vmImage: 'ubuntu-latest'  # or use Azure Pipelines and hosted agent name if required
+      vmImage: 'ubuntu-latest'
     steps:
+    - task: Maven@4
+      inputs:
+        mavenPomFile: 'java/stockmanager/pom.xml'
+        goals: 'clean install'
+        publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+
     - task: Docker@2
-      displayName: Build and push Docker image
       inputs:
         command: buildAndPush
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
+        repository: 'productcatalogue'
+        dockerfile: '$(Build.SourcesDirectory)/java/kubernetes/productcatalogue/Dockerfile'
+        containerRegistry: 'acrServiceConnection'  # Service connection name
         tags: |
-          $(tag)
+          $(Build.BuildId)
