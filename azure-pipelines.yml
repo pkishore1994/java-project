@@ -40,12 +40,3 @@ stages:
         sonarQubeRunAnalysis: false
         findBugsRunAnalysis: true
 
-    - task: Docker@2
-      displayName: Build and Push Docker Image
-      inputs:
-        command: buildAndPush
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
