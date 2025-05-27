@@ -26,16 +26,7 @@ stages:
         - task: Maven@4
           displayName: Build with Maven
           inputs:
-            mavenPomFile: '- task: Maven@4
-  inputs:
-    mavenPomFile: 'java/stockmanager/pom.xml'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    javaHomeOption: 'JDKVersion'
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: false'
+            mavenPomFile: 'java/stockmanager/pom.xml'
             publishJUnitResults: true
             testResultsFiles: '**/surefire-reports/TEST-*.xml'
             javaHomeOption: 'JDKVersion'
