@@ -20,7 +20,7 @@ stages:
   - job: Build
     displayName: Build Job
     pool:
-      vmImage: 'Default'
+      vmImage: 'ubuntu-latest'
     steps:
     - task: Maven@4
       displayName: 'Build Java Project'
