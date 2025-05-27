@@ -6,11 +6,9 @@ trigger:
 resources:
 - repo: self
 
-# Define variables
 variables:
-  # Docker settings
-  dockerRegistryServiceConnection: '068178be-5a48-482c-9f20-5a47ef460078'
-  imageRepository: 'pkishorejavaproject'
+  dockerRegistryServiceConnection: 'acrServiceConnection'  # name of the service connection you created in Azure DevOps
+  imageRepository: 'productcatalogue'
   containerRegistry: 'javaprojectacr.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/java/kubernetes/productcatalogue/Dockerfile'
   tag: '$(Build.BuildId)'
