@@ -1,7 +1,3 @@
-# Docker
-# Build a Docker image
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
-
 trigger:
 - main
 
@@ -9,21 +5,40 @@ resources:
 - repo: self
 
 variables:
+  dockerRegistryServiceConnection: 'mydockerhub'
+  imageRepository: 'productcatalogue'
+  containerRegistry: 'javaprojectacr.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/java/kubernetes/productcatalogue/Dockerfile'
   tag: '$(Build.BuildId)'
+  mavenPomPath: 'java/stockmanager/pom.xml'
+  jdkVersion: '1.11'
 
 stages:
 - stage: Build
-  displayName: Build image
+  displayName: Build and Push Stage
   jobs:
   - job: Build
-    displayName: Build
+    displayName: Build Job
     pool:
-      vmImage: ubuntu-latest
+      vmImage: 'ubuntu-latest'
     steps:
-    - task: Docker@2
-      displayName: Build an image
+    - task: Maven@4
+      displayName: 'Build Java Project'
       inputs:
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/java/kubernetes/productcatalogue/Dockerfile'
+        mavenPomFile: '$(mavenPomPath)'
+        goals: 'clean install'
+        publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '$(jdkVersion)'
+        mavenVersionOption: 'Default'
+
+    - task: Docker@2
+      displayName: 'Build and Push Docker Image'
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
