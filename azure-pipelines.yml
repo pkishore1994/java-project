@@ -1,4 +1,16 @@
 # Docker
+- task: Maven@4
+  inputs:
+    azureSubscription: 'Azure subscription 1(75c44373-9b56-46a2-b889-6dd37d384746)'
+    mavenPomFile: 'java/stockmanager/pom.xml'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    javaHomeOption: 'JDKVersion'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
+    findBugsRunAnalysis: true
 # Build and push an image to Azure Container Registry
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
