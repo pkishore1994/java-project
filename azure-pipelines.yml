@@ -19,6 +19,6 @@ stages:
         command: buildAndPush
         repository: 'productcatalogue'
         dockerfile: '$(Build.SourcesDirectory)/java/kubernetes/productcatalogue/Dockerfile'
-        containerRegistry: 'acrServiceConnection'  # Service connection name
+        containerRegistry: 'mydockerhub'  # Service connection name
         tags: |
           $(Build.BuildId)
