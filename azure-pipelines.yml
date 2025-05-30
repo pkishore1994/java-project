@@ -1,4 +1,8 @@
 stages:
+- task: Docker@2
+  inputs:
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
 - stage: Build
   jobs:
   - job: Build
